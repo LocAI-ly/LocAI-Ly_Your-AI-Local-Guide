@@ -168,9 +168,12 @@ body {
 }
 
 .ln {
-  transform: translateY(1.5vh);
-  bottom: 0;
+  display: none;
+  bottom: 0px;
   position: sticky;
+  width: 100vw;
+  height: 20vh;
+  background: linear-gradient(0deg, rgb(215, 215, 215) 0%, rgba(255,255,255,1) 40%, rgba(255,255,255,0) 100%);
 }
 
 .lastSearch {
@@ -330,7 +333,10 @@ body {
     --slideRightPanelUp: translateY(-85vh);
     --slideRightPanelDown: translateY(0);
   }
-  
+ 
+  .ln{
+    display: block;
+  }
   body{
     overflow:auto;
     width: 100vw;

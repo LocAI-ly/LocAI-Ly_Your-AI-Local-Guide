@@ -14,3 +14,32 @@
   .searchbar{
     transform: translateX(100%);
   }
+
+@media ((min-width:600px) and (max-width: 1024px)){
+  .searchbar{
+    scale: 1.4;
+  }    
+}
+
+@media ((min-width: 1024px) and (max-width: 1400px)){
+  .searchbar{
+    scale: 1.4;
+  }   
+}
+    
+@media ((min-width: 450px) and (max-width: 600px)){
+  .searchbar{
+    scale: 1.2;
+  } 
+}
+
+@media (max-width:450px) {
+  .searchbar{
+    scale: .8;
+  } 
+}   
+@media (max-width:324px) {
+  .searchbar{
+    scale: .65;
+  } 
+}   
