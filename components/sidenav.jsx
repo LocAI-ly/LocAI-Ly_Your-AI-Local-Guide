@@ -4,7 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import Logo1 from '@/assets/LocAIly_Logo_1.svg';
 import Logo2 from '@/assets/logo_2.svg';
-import home from '@/assets/Home.svg';
+import Home from '@/assets/home.svg';
 import history from '@/assets/History.svg';
 import settings from '@/assets/Settings.svg';
 
@@ -48,7 +48,7 @@ const Sidenav = () => {
         <div className='homeBtn'>
           <Link href={"@/app/learn"}>
             <Image
-              src={home}
+              src={Home}
               alt="Home"
             />
           </Link>
