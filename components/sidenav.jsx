@@ -42,6 +42,7 @@ const Sidenav = () => {
           priority
           src={logo}
           alt="LocAI.ly Logo"
+          
         />
       </div>
       <div className='mid'>

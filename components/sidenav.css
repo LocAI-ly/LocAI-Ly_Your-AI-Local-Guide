@@ -23,7 +23,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    transform: scale(70%);
+    transform: translateY(3vh) scale(.7);
 
 }
 .scaled {
@@ -129,6 +129,7 @@
 @media ((max-width:1301px) and (min-width:724px)){
     .sidenav .top{
         scale: 1.7;
-        transform: translateY(0px);
+        
+    transform: translateY(3vh);
     }
 }

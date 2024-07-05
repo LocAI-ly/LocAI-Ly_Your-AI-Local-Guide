@@ -35,11 +35,11 @@
 
 @media (max-width:450px) {
   .searchbar{
-    scale: .8;
+    scale: 1.1;
   } 
 }   
 @media (max-width:324px) {
   .searchbar{
-    scale: .65;
+    scale: .9;
   } 
 }   
