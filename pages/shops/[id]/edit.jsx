@@ -6,12 +6,17 @@ import { getShopById, updateShopById } from '../../../utils/shopService';
 export default function EditShop() {
   const router = useRouter();
   const { id } = router.query;
-  const [shop, setShop] = useState({ shop_name: '', shop_address: '', category: '', shop_owner: '' });
+  const [shopDetails, setShopDetails] = useState({
+    shop_name: '',
+    category: '',
+    shop_address: '',
+    shop_owner: ''
+  });
 
   useEffect(() => {
     const fetchShop = async () => {
       const data = await getShopById(id);
-      setShop(data);
+      setShopDetails(data);
     };
 
     if (id) {
@@ -21,34 +26,44 @@ export default function EditShop() {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setShop({ ...shop, [name]: value });
+    setShopDetails({ ...shopDetails, [name]: value });
   };
 
   const handleSave = async () => {
-    await updateShopById(id, shop);
+    await updateShopById(id, shopDetails);
     router.push(`/shops/${id}`);
   };
 
-  if (!shop) return <div>Loading...</div>;
+  if (!shopDetails) return <div>Loading...</div>;
 
   return (
     <div>
-      <h1>Edit Shop</h1>
-      <form>
-        <label>shop_name:</label>
-        <input type="text" name="name" value={shop.shop_name} onChange={handleInputChange} />
-        
-        <label>shop_address:</label>
-        <input type="text" name="address_id" value={shop.shop_address} onChange={handleInputChange} />
-        
-        <label>category:</label>
-        <input type="text" name="category_id" value={shop.category} onChange={handleInputChange} />
-
-        <label>shop_owner:</label>
-        <input type="text" name="owner_id" value={shop.shop_owner} onChange={handleInputChange} />
-        
-        <button type="button" onClick={handleSave}>Save Changes</button>
-      </form>
+      <h1>Shop Details</h1>
+      <input
+        type="text"
+        placeholder="Shop Name"
+        value={shopDetails.shop_name}
+        onChange={(e) => setShopDetails({ ...shopDetails, shop_name: e.target.value })}
+      />
+      <input
+        type="text"
+        placeholder="Category"
+        value={shopDetails.category}
+        onChange={(e) => setShopDetails({ ...shopDetails, category: e.target.value })}
+      />
+      <input
+        type="text"
+        placeholder="Shop Address"
+        value={shopDetails.shop_address}
+        onChange={(e) => setShopDetails({ ...shopDetails, shop_address: e.target.value })}
+      />
+      <input
+        type="text"
+        placeholder="Shop Owner"
+        value={shopDetails.shop_owner}
+        onChange={(e) => setShopDetails({ ...shopDetails, shop_owner: e.target.value })}
+      />
+      <button onClick={handleSave}>save changes </button>
     </div>
   );
 }

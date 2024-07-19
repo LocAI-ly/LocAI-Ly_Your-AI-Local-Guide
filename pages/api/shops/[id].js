@@ -51,19 +51,91 @@ export default async function handler(req, res) {
   }
 
   if (req.method === "PUT") {
-    console.log(req.body);
-    const { shop_name, category_id } = req.body;
-
-    const { data, error } = await supabase
-      .from("shop")
-      .update({ shop_name, category_id })
-      .eq("shop_id", id);
-
-    if (error) {
+    try {
+      console.log(req.body);
+      const { shop_name, category, shop_address, shop_owner } = req.body;
+      
+      // Parse shop_address
+      let shop_address_chunks = shop_address.split(',');
+      let temp_street_address = shop_address_chunks[0] + ',' + shop_address_chunks[1].trim().split(' ')[0]; 
+      let temp_city = shop_address_chunks[1].trim().split(' ')[1];
+      let temp_state = shop_address_chunks[2].trim().split(' ')[0];
+      let temp_zip_code = shop_address_chunks[2].trim().split(' ')[1];
+      
+      // Parse shop_owner
+      let [temp_first_name, temp_last_name] = shop_owner.trim().split(' ');
+  
+      // Update shop
+      const { data: shopData, error: shopError } = await supabase
+        .from("shop")
+        .update({ shop_name })
+        .eq("shop_id", id)
+        .select();
+  
+      if (shopError) throw shopError;
+  
+      // Update category
+      const { data: categoryData, error: categoryError } = await supabase
+        .from("category")
+        .update({ category_name: category })
+        .eq("category_id", shopData[0].category_id)
+        .select();
+  
+      if (categoryError) throw categoryError;
+  
+      // Update shop_owner
+      const { data: ownerData, error: ownerError } = await supabase
+        .from("shop_owner")
+        .update({ first_name: temp_first_name, last_name: temp_last_name })
+        .eq("shop_id", id)
+        .select();
+  
+      if (ownerError) throw ownerError;
+  
+      // Update shop_address
+      const { data: addressData, error: addressError } = await supabase
+        .from("shop_address")
+        .update({
+          street_address: temp_street_address,
+          city: temp_city,
+          state: temp_state,
+          zip_code: temp_zip_code
+        })
+        .eq("shop_id", id)
+        .select();
+  
+      if (addressError) throw addressError;
+  
+      // Fetch updated shop data
+      const { data: updatedShop, error: fetchError } = await supabase
+        .from("shop")
+        .select(`
+          shop_id,
+          shop_name,
+          shop_owner (
+            first_name,
+            last_name
+          ),
+          category (
+            category_name
+          ),
+          shop_address (
+            street_address,
+            city,
+            state,
+            zip_code
+          )
+        `)
+        .eq("shop_id", id)
+        .single();
+  
+      if (fetchError) throw fetchError;
+  
+      return res.status(200).json(updatedShop);
+    } catch (error) {
+      console.error('Error updating shop:', error);
       return res.status(500).json({ error: error.message });
     }
-
-    return res.status(200).json(data);
   }
 
   if (req.method === "DELETE") {

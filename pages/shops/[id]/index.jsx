@@ -7,7 +7,12 @@ export default function Shop() {
   const router = useRouter();
   const { id } = router.query;
   const [shop, setShop] = useState(null);
-  const [shopDetails, setShopDetails] = useState({ shop_name: '', category_id: '' });
+  const [shopDetails, setShopDetails] = useState({
+    shop_name: '',
+    category: '',
+    shop_address: '',
+    shop_owner: ''
+  });
 
   useEffect(() => {
     if (id) {
@@ -18,7 +23,12 @@ export default function Shop() {
   const fetchShop = async () => {
     const data = await getShopById(id);
     setShop(data);
-    setShopDetails(data);
+    setShopDetails({
+      shop_name: data.shop_name,
+      category: data.category,
+      shop_address: data.shop_address,
+      shop_owner: data.shop_owner
+    });
   };
 
   const handleUpdate = async () => {
