@@ -17,6 +17,7 @@ export default function Shops() {
   return (
     <div>
       <h1>Shops</h1>
+      <Link href={'/shops/create'}>Create a new shop</Link>
       <ul>
         {shops.map((shop) => (
           <li key={shop.shop_id}>
