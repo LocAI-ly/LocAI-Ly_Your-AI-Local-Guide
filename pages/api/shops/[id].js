@@ -52,6 +52,8 @@ export default async function handler(req, res) {
 
   if (req.method === "PUT") {
     try {
+      const { shop_id } = req.query;
+      console.log(typeof(shop_id));
       console.log(req.body);
       const { shop_name, category, shop_address, shop_owner } = req.body;
       
@@ -139,16 +141,37 @@ export default async function handler(req, res) {
   }
 
   if (req.method === "DELETE") {
-    const { data, error } = await supabase
-      .from("shop")
-      .delete()
-      .eq("shop_id", id);
 
-    if (error) {
+    
+    try {
+      const {id} = req.query;
+  
+      // Delete shop_address
+      const { error: addressError } = await supabase
+        .from("shop_address")
+        .delete()
+        .eq("shop_id", id);
+      if (addressError) throw addressError;
+  
+      // Delete shop_owner (but keep the user entry)
+      const { error: ownerError } = await supabase
+        .from("shop_owner")
+        .delete()
+        .eq("shop_id", id);
+      if (ownerError) throw ownerError;
+  
+      // Delete shop
+      const { error: shopError } = await supabase
+        .from("shop")
+        .delete()
+        .eq("shop_id", id);
+      if (shopError) throw shopError;
+  
+      return res.status(200).json({ message: "Shop and related records deleted successfully" });
+    } catch (error) {
+      console.error('Error deleting shop:', error);
       return res.status(500).json({ error: error.message });
     }
-
-    return res.status(200).json(data);
   }
 
   res.setHeader("Allow", ["GET", "PUT", "DELETE"]);
