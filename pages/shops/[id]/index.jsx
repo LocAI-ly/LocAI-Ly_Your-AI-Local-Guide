@@ -51,18 +51,6 @@ export default function Shop() {
         <h3>{shop.category}</h3>
         <h3>{shop.shop_address}</h3>
         <h3>{shop.shop_owner}</h3>
-      {/* <input
-        type="text"
-        placeholder="Shop Name"
-        value={shopDetails.name}
-        onChange={(e) => setShopDetails({ ...shopDetails, shop_name: e.target.value })}
-      />
-      <input
-        type="text"
-        placeholder="Category ID"
-        value={shopDetails.category_id}
-        onChange={(e) => setShopDetails({ ...shopDetails, category_id: e.target.value })}
-      /> */}
       <Link href={`/shops/${id}/edit`}>
         <button>Update Shop</button>
       </Link>
