@@ -3,6 +3,7 @@ import Link from "next/link";
 import axios from "axios";
 import { createShop } from "../../../utils/shopService";
 import Router from "next/router";
+import state_city from '../../../public/data/state_city.json';
 
 export default function CreateShop() {
     const ShopForm = ({ onSubmit }) => {
