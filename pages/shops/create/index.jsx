@@ -3,7 +3,7 @@ import Link from "next/link";
 import axios from "axios";
 import { createShop } from "../../../utils/shopService";
 import Router from "next/router";
-import state_city from '../../../public/data/state_city.json';
+import { getStates, getCitiesByState } from "@/utils/stateCitiesService";
 
 export default function CreateShop() {
     const ShopForm = ({ onSubmit }) => {
@@ -27,6 +27,8 @@ export default function CreateShop() {
       });
   
       const [categories, setCategories] = useState([]);
+      const [states, setStates] = useState([]);
+      const [cities, setCities] = useState([]);
   
       useEffect(() => {
         // Fetch categories from the API
@@ -35,7 +37,18 @@ export default function CreateShop() {
           .then((response) => setCategories(response.data))
           .catch((error) => console.error("Error fetching categories:", error));
         //   console.log(categories);
+
+        setStates(getStates());
       }, []);
+
+      useEffect(() => {
+        // Fetch cities when state changes
+        if (shopAddress.state) {
+          setCities(getCitiesByState(shopAddress.state));
+        } else {
+          setCities([]);
+        }
+      }, [shopAddress.state]);
   
       const handleChange = (e, setState, state) => {
         const { name, value } = e.target;
@@ -134,23 +147,36 @@ export default function CreateShop() {
             />
           </label>
           <label>
-            City:
-            <input
-              type="text"
-              name="city"
-              value={shopAddress.city}
-              onChange={(e) => handleChange(e, setShopAddress, shopAddress)}
-            />
-          </label>
-          <label>
-            State:
-            <input
-              type="text"
-              name="state"
-              value={shopAddress.state}
-              onChange={(e) => handleChange(e, setShopAddress, shopAddress)}
-            />
-          </label>
+          State:
+          <select
+            name="state"
+            value={shopAddress.state}
+            onChange={(e) => handleChange(e, setShopAddress, shopAddress)}
+          >
+            <option value="" disabled>Select a state</option>
+            {states.map((state, index) => (
+              <option key={index} value={state}>
+                {state}
+              </option>
+            ))}
+          </select>
+        </label>
+        <label>
+          City:
+          <select
+            name="city"
+            value={shopAddress.city}
+            onChange={(e) => handleChange(e, setShopAddress, shopAddress)}
+            disabled={!shopAddress.state}
+          >
+            <option value="" disabled>Select a city</option>
+            {cities.map((city, index) => (
+              <option key={index} value={city}>
+                {city}
+              </option>
+            ))}
+          </select>
+        </label>
           <label>
             Zip Code:
             <input
